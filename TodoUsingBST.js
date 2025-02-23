@@ -151,7 +151,7 @@ class taskBSTtree{
         }
     }
 }
- const taskTree = new taskBSTtree();
+ /*const taskTree = new taskBSTtree();
  const rl = readline.createInterface({
      input: process.stdin,
      output: process.stdout
@@ -189,4 +189,37 @@ const promptUser = () => {
     });
 });
 };
- promptUser();
+ promptUser();*/
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+const taskTree = new taskBSTtree();
+let priorities = Array.from({ length: 500 }, (_, i) => i + 1);
+shuffle(priorities);
+
+
+priorities.forEach((priority) => {
+    taskTree.root = taskTree.insert(taskTree.root, priority, `Task ${priority}`);
+});
+
+
+for (let i = 1; i <= 400; i++) {
+    taskTree.root = taskTree.delete(taskTree.root, i);
+}
+
+
+const searchPriority = 405;
+const result = taskTree.search(taskTree.root, searchPriority);
+
+console.log("Tasks after deletion (in sorted order):");
+taskTree.inOrder(taskTree.root);
+
+if (result) {
+    console.log(`\nSearching for priority: ${result.priority}, Task: ${result.task}`);
+} else {
+    console.log(`\nTask with priority ${searchPriority} not found.`);
+}
